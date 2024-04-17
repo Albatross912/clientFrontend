@@ -1,0 +1,57 @@
+/* Login.css */
+
+.login {
+  display: flex;
+  align-items: center;
+  justify-content: right;
+  height: 80vh;
+  background-image: url("../../../public/bg-1.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+form {
+  width: 300px; /* Decreased the width of the form */
+  // height: 500px;
+  background-color: #e7edc8;
+  margin-right: 80px;
+  opacity: 90%;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border: 2px solid #dfb4d8;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  align-items: center; /* Center the form horizontally */
+}
+
+h1 {
+  color: black;
+  margin-bottom: 20px;
+}
+
+label {
+  color: rgb(0, 0, 0);
+  font-size: 18px;
+}
+
+input {
+  padding: 15px;
+  border: 1px solid rgb(216, 214, 214);
+}
+
+button.login-button {
+  border: none;
+  padding: 15px 80px; /* Increase the padding to adjust the width */
+  color: white;
+  font-weight: 500;
+  font-size: 18px;
+  background-color: #1dbf73;
+  cursor: pointer;
+}
+
+button.login-button:hover {
+  background-color: darkgreen;
+}
