@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import './booking.scss';
 import getCurrentUser from '../../utils/getCurrentUser';
 import newRequest from '../../utils/newRequest';
+import { base_url } from '../../utils/urls';
 
 
 const Booking = () => {
@@ -91,7 +92,7 @@ const Booking = () => {
       }
 
       // If buyeruserId is not empty, proceed with the booking submission
-      const response = await fetch(`http://localhost:8800/api/bookings/`, {
+      const response = await fetch(`${base_url}/api/bookings/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

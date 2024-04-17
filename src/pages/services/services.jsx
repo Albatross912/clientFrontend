@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import getCurrentUser from '../../utils/getCurrentUser';
 import "./services.scss";
+import { base_url } from "../../utils/urls";
 
 const Services = () => {
   const [servicesData, setServicesData] = useState([]);
@@ -11,7 +12,7 @@ const Services = () => {
 
   const fetchServices = async () => {
     try {
-      const response = await fetch(`http://localhost:8800/api/services?userId=${currentUser._id}`);
+      const response = await fetch(`${base_url}/api/services?userId=${currentUser._id}`);
       if (response.ok) {
         const data = await response.json();
         setServicesData(data);
@@ -43,7 +44,7 @@ const Services = () => {
     try {
       if (selectedServiceIndex !== null) {
         const serviceId = servicesData[selectedServiceIndex]._id;
-        const response = await fetch(`http://localhost:8800/api/services/${serviceId}`, {
+        const response = await fetch(`${base_url}/api/services/${serviceId}`, {
           method: "DELETE",
         });
 
@@ -74,7 +75,7 @@ const Services = () => {
 
       if (newService.name && newService.price >= 0) {
         if (selectedServiceIndex !== null) {
-          const response = await fetch(`http://localhost:8800/api/services/${servicesData[selectedServiceIndex]._id}`, {
+          const response = await fetch(`${base_url}/api/services/${servicesData[selectedServiceIndex]._id}`, {
             method: "PUT",
             headers: {
               "Content-Type": "application/json",
@@ -89,7 +90,7 @@ const Services = () => {
             console.error('Failed to update service');
           }
         } else {
-          const response = await fetch(`http://localhost:8800/api/services/`, {
+          const response = await fetch(`${base_url}/api/services/`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",

@@ -1,7 +1,8 @@
 import axios from "axios";
+import { base_url } from "./urls";
 
 const newRequest = axios.create({
-  baseURL: "http://localhost:8800/api/",
+  baseURL: `${base_url}/api/`,
   withCredentials: true,
 });
 
