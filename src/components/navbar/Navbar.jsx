@@ -1,141 +1,86 @@
-import React, { useEffect, useState, useRef } from "react";
-  import { Link, useLocation, useNavigate } from "react-router-dom";
-  import newRequest from "../../utils/newRequest";
-  import "./Navbar.scss";
-  import logoImage from '../../../public/blacklogo.png';
+import React, { useState, useRef } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import newRequest from "../../utils/newRequest";
+import logoImage from "../../../public/blacklogo.png";
 
-
-  function Navbar() {
-    const [active, setActive] = useState(false);
-    const [open, setOpen] = useState(false);
+function Navbar() {
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const accountBtnRef = useRef(null);
-  
     const { pathname } = useLocation();
     const currentUser = JSON.parse(localStorage.getItem("currentUser"));
     const navigate = useNavigate();
-  
+
     const handleLogout = async () => {
-      try {
-        await newRequest.post("/auth/logout");
-        localStorage.setItem("currentUser", null);
-        navigate("/");
-      } catch (err) {
-        console.log(err);
-      }
+        try {
+            await newRequest.post("/auth/logout");
+            localStorage.setItem("currentUser", null);
+            navigate("/");
+        } catch (err) {
+            console.log(err);
+        }
     };
 
     return (
-      <div className={active || pathname !== "/" ? "navbar active" : "navbar"}>
-        <div className="container">
-        <Link className="link" to="/">
-        <div className="logo">
-          <img src={logoImage} alt="Logo" className="logo-image" />
-          <div className="logo-text">
-            <h1>ONLINE BARBER PLATFORM</h1>
-          </div>
-        </div>
-      </Link>
-          <div className="links">
-          {currentUser?.isSeller && (
-            <Link className="link" to="/services">
-              Services
-            </Link>
-          )}
-            <Link className="link" to="/about">
-              About
-            </Link>
-            <Link className="link" to="/contact">
-              Contact Us
-            </Link>
-          <Link className="link" to="/privacy">
-              Privacy policy
-          </Link>
-          <Link className="link" to="/BarberHelpPage">
-              Help
-          </Link>
-            {!currentUser?.isSeller}
-            {currentUser ? (
-              <div className="user" onClick={() => setOpen(!open)} ref={accountBtnRef}>
-                <img src={currentUser.img || "/noavatar.jpg"} alt="" />
-                <span>{currentUser?.username}</span>
-                {open && (
-                  <div className="options">
-                    {currentUser.isSeller && (
-                      <>
-                        <Link className="link" to="/dash">
-                        Appointment
-                        </Link>
-                        <Link className="link" to="/mygigs">
-                        Shops
-                        </Link>
-                        <Link className="link" to="/add">
-                          Add New Shops
-                        </Link>
-                      </>
-                    )}
-                    <Link className="link" to="/orders">
-                      Booking
-                    </Link>
-                    <Link className="link" to="/allproperty">
-                      All Shops
-                    </Link>
-                    <Link className="link" to="/messages">
-                      Messages
-                    </Link>
-                    <Link className="link" to="/profile">
-                      Profile
-                    </Link>
-                    <Link className="link" onClick={handleLogout}>
-                      Logout
-                    </Link>
-                  </div>
-                )}
-              </div>
-            ) : (<div className="account-btn">
-              <button><Link className="link" to="/login">
-              Sign In
-            </Link></button>
-          </div>
-            )}
-          </div>
-        </div>
-        {/* {(active || pathname !== "/") && (
-          <>
-            <hr />
-            <div className="menu">
-              <Link className="link menuLink" to="/">
-                Graphics & Design
-              </Link>
-              <Link className="link menuLink" to="/">
-                Video & Animation
-              </Link>
-              <Link className="link menuLink" to="/">
-                Writing & Translation
-              </Link>
-              <Link className="link menuLink" to="/">
-                AI Services
-              </Link>
-              <Link className="link menuLink" to="/">
-                Digital Marketing
-              </Link>
-              <Link className="link menuLink" to="/">
-                Music & Audio
-              </Link>
-              <Link className="link menuLink" to="/">
-                Programming & Tech
-              </Link>
-              <Link className="link menuLink" to="/">
-                Business
-              </Link>
-              <Link className="link menuLink" to="/">
-                Lifestyle
-              </Link>
-            </div>
-            <hr />
-          </>
-        )} */}
-      </div>
-    );
-  }
+        <div
+            className={`w-full bg-white shadow-md fixed top-0 z-50 ${pathname !== "/"
+                ? "bg-gray-800 text-white"
+                : ""
+            }`}
+        >
+            <div className="container mx-auto px-4 py-4 flex justify-between items-center">
+                <Link to="/" className="flex items-center">
+                    <img src={logoImage} alt="Logo" className="w-10 h-10" />
+                    <h1 className="text-2xl font-bold ml-4">ONLINE BARBER PLATFORM</h1>
+                </Link>
+                
+                {/* Burger button for mobile menu */}
+                <button
+                    onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                    className="md:hidden text-gray-800 focus:outline-none"
+                >
+                    {/* Icon for burger menu */}
+                    <svg
+                        className="w-6 h-6"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                    >
+                        <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M4 6h16M4 12h16M4 18h16"
+                        />
+                    </svg>
+                </button>
 
-  export default Navbar;
+                {/* Navigation links */}
+                <div className="hidden md:flex space-x-4">
+                    <Link to="/about" className="hover:text-gray-400">About</Link>
+                    <Link to="/contact" className="hover:text-gray-400">Contact Us</Link>
+                    <Link to="/privacy" className="hover:text-gray-400">Privacy Policy</Link>
+                    <Link to="/BarberHelpPage" className="hover:text-gray-400">Help</Link>
+                </div>
+
+                {/* Mobile menu */}
+                {isMobileMenuOpen && (
+                    <div className="absolute top-16 left-0 w-full bg-white shadow-lg rounded-b-lg">
+                        <div className="flex flex-col space-y-2 py-4 px-4">
+                            <Link to="/about" className="hover:text-gray-400">About</Link>
+                            <Link to="/contact" className="hover:text-gray-400">Contact Us</Link>
+                            <Link to="/privacy" className="hover:text-gray-400">Privacy Policy</Link>
+                            <Link to="/BarberHelpPage" className="hover:text-gray-400">Help</Link>
+                            {/* Add other links here */}
+                        </div>
+                    </div>
+                )}
+                <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                            <Link to="/login">Sign In</Link>
+                        </button>
+            </div>
+        </div>
+    );
+}
+
+export default Navbar;
